@@ -5,7 +5,7 @@ services:
     volumes:
       - "./frontend:/var/www/html/" #bind dir
     ports:
-      - "80:80"
+      - 8085:80
     depends_on:
       - backend
     networks:
@@ -14,15 +14,17 @@ services:
   backend:
     build:
       context: ./backend
+    volumes:
+      - "./backend:/var/www/html/" #bind dir
     ports:
-      - "8081:80"
+      - 8086:80
     environment:
       - DB_HOST=db
       - DB_USER=root
       - DB_PASSWORD=root
       - DB_NAME=mydatabase
     depends_on:
-      - db  #require db to be up first for connection
+      - db #require db to be up first for connection
     networks:
       - frontend-network
       - backend-network
@@ -41,7 +43,7 @@ services:
   phpmyadmin:
     image: phpmyadmin
     ports:
-      - 8082:80
+      - 8087:80
     environment:
       - PMA_HOST=db
       - PMA_PORT=3306
@@ -49,7 +51,7 @@ services:
       - backend-network
 
 volumes:
-  db-data:  #named volume declaration
+  db-data: #named volume declaration
 
 networks:
   frontend-network:
